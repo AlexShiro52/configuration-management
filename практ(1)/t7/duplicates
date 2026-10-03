@@ -1,0 +1,6 @@
+#!/bin/bash
+
+find "$1" -type f -exec shasum {} + | sort | awk '
+$1 == hash { print previous; print }
+{ hash=$1; previous=$0 }
+'
