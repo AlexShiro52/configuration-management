@@ -1,0 +1,22 @@
+#!/bin/bash
+
+for file in *.c *.js *.py; do
+    first_line=$(head -n 1 "$file")
+
+    case "$file" in
+        *.c|*.js)
+            if echo "$first_line" | grep -Eq '^[[:space:]]*(//|/\*)'; then
+                echo "$file: комментарий есть"
+            else
+                echo "$file: комментария нет"
+            fi
+            ;;
+        *.py)
+            if echo "$first_line" | grep -Eq '^[[:space:]]*#'; then
+                echo "$file: комментарий есть"
+            else
+                echo "$file: комментария нет"
+            fi
+            ;;
+    esac
+done

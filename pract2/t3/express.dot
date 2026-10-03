@@ -1,0 +1,35 @@
+digraph express {
+    rankdir=LR;
+    node [shape=box];
+
+    "express 5.2.1" [shape=ellipse];
+
+    "express 5.2.1" -> "accepts ^2.0.0";
+    "express 5.2.1" -> "body-parser ^2.2.1";
+    "express 5.2.1" -> "content-disposition ^1.0.0";
+    "express 5.2.1" -> "content-type ^1.0.5";
+    "express 5.2.1" -> "cookie ^0.7.1";
+    "express 5.2.1" -> "cookie-signature ^1.2.1";
+    "express 5.2.1" -> "debug ^4.4.0";
+    "express 5.2.1" -> "depd ^2.0.0";
+    "express 5.2.1" -> "encodeurl ^2.0.0";
+    "express 5.2.1" -> "escape-html ^1.0.3";
+    "express 5.2.1" -> "etag ^1.8.1";
+    "express 5.2.1" -> "finalhandler ^2.1.0";
+    "express 5.2.1" -> "fresh ^2.0.0";
+    "express 5.2.1" -> "http-errors ^2.0.0";
+    "express 5.2.1" -> "merge-descriptors ^2.0.0";
+    "express 5.2.1" -> "mime-types ^3.0.0";
+    "express 5.2.1" -> "on-finished ^2.4.1";
+    "express 5.2.1" -> "once ^1.4.0";
+    "express 5.2.1" -> "parseurl ^1.3.3";
+    "express 5.2.1" -> "proxy-addr ^2.0.7";
+    "express 5.2.1" -> "qs ^6.14.0";
+    "express 5.2.1" -> "range-parser ^1.2.1";
+    "express 5.2.1" -> "router ^2.2.0";
+    "express 5.2.1" -> "send ^1.1.0";
+    "express 5.2.1" -> "serve-static ^2.2.0";
+    "express 5.2.1" -> "statuses ^2.0.1";
+    "express 5.2.1" -> "type-is ^2.0.1";
+    "express 5.2.1" -> "vary ^1.1.2";
+}
