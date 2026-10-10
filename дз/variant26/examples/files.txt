@@ -1,0 +1,9 @@
+# Кавычки и копирование файлов
+ls
+cp "my file.txt" copy.txt
+chmod 600 copy.txt
+ls -l
+cd hello.txt
+cp missing.txt copy.txt
+history
+exit
