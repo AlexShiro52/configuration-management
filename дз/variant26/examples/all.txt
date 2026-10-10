@@ -1,0 +1,43 @@
+# Все команды. Ошибки выводятся, выполнение продолжается.
+conf-dump
+conf-dump extra
+ls
+ls -a -l /
+ls hello.txt
+ls missing
+ls -z
+cd a/b/c
+ls .
+cd ..
+cd /
+cd
+cd hello.txt
+cd a b
+cal
+cal 2026
+cal 10 2026
+cal 13 2026
+cp "my file.txt" "my copy.txt" # Комментарий после команды
+cp hello.txt empty
+cp binary.bin binary-copy.bin
+cp hello.txt hello.txt
+cp missing.txt copy.txt
+cp a copy
+cp -r a copy
+cp -r a empty
+cp -r a a/b
+cp
+chmod 600 "my copy.txt"
+chmod 700 empty
+chmod 1755 copy
+ls -l
+chmod 999 hello.txt
+chmod 600 missing
+chmod
+unknown
+ls "незакрытая кавычка
+ls "#это имя файла"
+history
+history extra
+exit extra
+exit

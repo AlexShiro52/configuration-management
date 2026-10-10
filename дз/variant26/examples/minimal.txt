@@ -1,0 +1,12 @@
+# Минимальная VFS
+conf-dump
+ls
+cd empty
+ls
+cd ..
+chmod 700 empty
+ls -l
+cp -r empty copy
+ls
+history
+exit
