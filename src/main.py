@@ -6,6 +6,7 @@ import sys
 from .config import arguments
 from .graph import build_graph, load_order, read_graph
 from .repository import dependencies, normalize
+from .render import render
 
 
 def main(argv=None):
@@ -20,7 +21,7 @@ def main(argv=None):
 
 
 def run(args):
-    """Выполнить этап 1, 2 или построение графа рекурсивным DFS."""
+    """Выполнить выбранный этап: настройки, данные, DFS, порядок или PNG."""
     if args.stage == 1:
         for key, value in vars(args).items():
             print(f"{key}={value}")
@@ -30,10 +31,14 @@ def run(args):
         print("\n".join(get_dependencies(root)) or "Нет прямых зависимостей")
         return
     graph = build_graph(root, get_dependencies)
+    if args.stage == 3:
+        print(json.dumps(graph, ensure_ascii=False, indent=2))
+        return
     if args.stage == 4:
         print(" -> ".join(load_order(graph, root)))
         return
-    print(json.dumps(graph, ensure_ascii=False, indent=2))
+    description = render(graph, args.output)
+    print(f"D2: {description}\nPNG: {args.output}")
 
 
 def source(args):

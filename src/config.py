@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 
 def arguments(argv=None):
     """Прочитать настройки и проверить каждый пользовательский параметр."""
-    parser = argparse.ArgumentParser(description="Граф зависимостей: вариант 26")
+    parser = argparse.ArgumentParser(description="Зависимости: вариант 26")
     parser.add_argument("--package", required=True, help="имя пакета")
     parser.add_argument("--repository", default="https://pypi.org/pypi",
                         help="URL JSON API или путь к тестовому JSON")
@@ -33,15 +33,30 @@ def validate(args):
     if args.test:
         if not Path(args.repository).is_file():
             raise ValueError("--repository: тестовый файл не найден")
+        inputs = Path(args.repository).resolve()
+        output = Path(args.output).resolve()
+        if inputs in (output, output.with_suffix(".d2")):
+            raise ValueError("--output: результат перезапишет входной файл")
     else:
-        url = urlsplit(args.repository)
-        if url.scheme not in ("http", "https") or not url.hostname:
-            raise ValueError("--repository: нужен URL http:// или https://")
-        if url.query or url.fragment or url.username or url.password:
-            raise ValueError("--repository: лишние части URL")
-        if url.port is not None and url.port == 0:
-            raise ValueError("--repository: недопустимый порт")
-    output = Path(args.output)
+        validate_url(args.repository)
+    validate_output(Path(args.output))
+
+
+def validate_url(repository):
+    """Проверить адрес базового PyPI-совместимого JSON API."""
+    if any(char.isspace() for char in repository):
+        raise ValueError("--repository: URL не должен содержать пробелы")
+    url = urlsplit(repository)
+    if url.scheme not in ("http", "https") or not url.hostname:
+        raise ValueError("--repository: нужен URL http:// или https://")
+    if url.query or url.fragment or url.username or url.password:
+        raise ValueError("--repository: лишние части URL")
+    if url.port == 0:
+        raise ValueError("--repository: недопустимый порт")
+
+
+def validate_output(output):
+    """Проверить формат PNG и доступность выходного пути."""
     if output.suffix.lower() != ".png" or output.is_dir():
         raise ValueError("--output: требуется имя файла с расширением .png")
     if not output.parent.is_dir() or not os.access(output.parent, os.W_OK):
