@@ -5,8 +5,8 @@ import unittest
 from unittest.mock import patch
 from urllib.error import URLError
 
-from src.markers import enabled
-from src.repository import dependencies, metadata, normalize, package_name
+from src.main import enabled
+from src.main import dependencies, metadata, normalize, package_name
 
 
 class RepositoryTests(unittest.TestCase):
@@ -27,25 +27,25 @@ class RepositoryTests(unittest.TestCase):
     def test_metadata_and_cache(self):
         """HTTP-ответ читается стандартной библиотекой только один раз."""
         data = b'{"info":{"requires_dist":["B>=1","C; extra == \'dev\'"]}}'
-        with patch("src.repository.urlopen", return_value=io.BytesIO(data)):
+        with patch("src.main.urlopen", return_value=io.BytesIO(data)):
             self.assertEqual(dependencies("https://example.org", "a"), ["b"])
             self.assertEqual(dependencies("https://example.org", "a"), ["b"])
 
     def test_optional_and_empty(self):
         """Запрошенный extra включается; null означает пустой список."""
         info = {"requires_dist": ["B; extra == 'fast'", "C", "C"]}
-        with patch("src.repository.metadata", return_value=info):
+        with patch("src.main.metadata", return_value=info):
             self.assertEqual(dependencies("url", "a[fast]"), ["b", "c"])
-        with patch("src.repository.metadata", return_value={}):
+        with patch("src.main.metadata", return_value={}):
             self.assertEqual(dependencies("url", "a"), [])
 
     def test_bad_metadata(self):
         """Сеть, JSON и структура метаданных проверяются."""
-        with patch("src.repository.urlopen", side_effect=URLError("offline")):
+        with patch("src.main.urlopen", side_effect=URLError("offline")):
             with self.assertRaises(ValueError):
                 metadata("https://example.org", "a")
         for data in [b"bad", b"{}", b'{"info":[]}']:
-            with patch("src.repository.urlopen", return_value=io.BytesIO(data)):
+            with patch("src.main.urlopen", return_value=io.BytesIO(data)):
                 with self.assertRaises(ValueError):
                     metadata("https://example.org", "a")
 

@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from src.graph import build_graph, read_graph
+from src.main import build_graph, read_graph
 
 
 class GraphTests(unittest.TestCase):

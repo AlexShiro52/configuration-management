@@ -2,7 +2,7 @@
 
 import unittest
 
-from src.graph import build_graph, load_order, read_graph
+from src.main import build_graph, load_order, read_graph
 
 
 class OrderTests(unittest.TestCase):

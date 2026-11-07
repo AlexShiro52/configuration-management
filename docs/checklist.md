@@ -6,7 +6,7 @@
 
 | Пункт | Выполнение и доказательство |
 |---|---|
-| 1. Параметры через CLI | argparse, src/config.py |
+| 1. Параметры через CLI | argparse, src/main.py |
 | 2. Имя, репозиторий, тестовый режим, PNG | --package, --repository, --test, --output |
 | 3. Вывод ключ-значение | --stage 1; test_cli.test_settings |
 | 4. Ошибки всех параметров | tests/test_config.py и docs/errors.md |
@@ -17,7 +17,7 @@
 | Пункт | Выполнение и доказательство |
 |---|---|
 | 1. Формат Python (pip) | Requires-Dist из PyPI JSON API |
-| 2. Прямые зависимости по URL | urllib.request, src/repository.py |
+| 2. Прямые зависимости по URL | urllib.request, src/main.py |
 | 3. Вывод прямых зависимостей | --stage 2; test_cli.test_direct_and_transitive |
 | 4. Отдельный коммит | feat(pypi): implement stage 2 dependency metadata collection |
 
@@ -29,7 +29,7 @@
 
 | Пункт | Выполнение и доказательство |
 |---|---|
-| 1. DFS с рекурсией | graph.build_graph и вложенная visit |
+| 1. DFS с рекурсией | build_graph и вложенная visit |
 | 2. Циклы | Отметка вершины до рекурсии; ребра сохраняются |
 | 3. Тестовый репозиторий и разные случаи | Пять JSON в examples; evidence/demo.txt |
 | 4. Отдельный коммит | feat(graph): implement stage 3 recursive DFS and test repositories |
@@ -53,8 +53,8 @@
 
 | Пункт | Выполнение и доказательство |
 |---|---|
-| 1. Язык диаграмм D2 | render.to_d2, примеры examples/*.d2 |
-| 2. PNG | render.render, восемь готовых PNG в комплекте |
+| 1. Язык диаграмм D2 | to_d2, примеры examples/*.d2 |
+| 2. PNG | render, восемь готовых PNG в комплекте |
 | 3. Три реальных пакета | requests, flask, httpx |
 | 4. Сравнение визуализаций | Совпадение вершин и ребер с pipdeptree, comparison.md |
 | 5. Отдельный коммит | feat(visualization): complete stage 5 D2 and PNG delivery |
@@ -67,7 +67,7 @@
 | Правила | Результат |
 |---|---|
 | С1-С5 | README.md, .gitignore, src, tests, run.sh и run.bat присутствуют |
-| С6 | Пять Conventional/Scoped Commits с поясняющими телами |
+| С6 | Пять коммитов этапов и отдельный коммит объединения кода |
 | Г1-Г5 | В отслеживаемых файлах нет архивов, бинарных файлов и кэшей |
 | Р1 | Каждый файл короче 1000 строк |
 | Р2 | Python-строки не длиннее 80 символов |

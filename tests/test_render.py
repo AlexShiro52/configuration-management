@@ -7,7 +7,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from src.render import PNG_SIGNATURE, render, to_d2
+from src.main import PNG_SIGNATURE, render, to_d2
 
 
 class RenderTests(unittest.TestCase):
@@ -24,7 +24,7 @@ class RenderTests(unittest.TestCase):
         """При отсутствии D2 остается текст, ложного PNG нет."""
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "test.png"
-            with patch("src.render.shutil.which", return_value=None):
+            with patch("src.main.shutil.which", return_value=None):
                 with self.assertRaisesRegex(ValueError, "D2 не найден"):
                     render({"A": []}, path)
             self.assertTrue(path.with_suffix(".d2").exists())
@@ -39,8 +39,8 @@ class RenderTests(unittest.TestCase):
             for result in cases:
                 kwargs = {"side_effect" if isinstance(result, Exception)
                           else "return_value": result}
-                with patch("src.render.shutil.which", return_value="d2"):
-                    with patch("src.render.subprocess.run", **kwargs):
+                with patch("src.main.shutil.which", return_value="d2"):
+                    with patch("src.main.subprocess.run", **kwargs):
                         with self.assertRaises(ValueError):
                             render({"A": []}, Path(folder) / "out.png")
 
@@ -56,8 +56,8 @@ class RenderTests(unittest.TestCase):
                     Path(command[-1]).write_bytes(content)
                     return SimpleNamespace(returncode=0, stderr="")
 
-                with patch("src.render.shutil.which", return_value="d2"):
-                    with patch("src.render.subprocess.run", fake_run):
+                with patch("src.main.shutil.which", return_value="d2"):
+                    with patch("src.main.subprocess.run", fake_run):
                         if content.startswith(PNG_SIGNATURE):
                             render({"A": []}, output)
                             self.assertEqual(output.read_bytes(), content)

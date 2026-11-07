@@ -4,7 +4,7 @@ import contextlib
 import io
 import unittest
 
-from src.config import arguments
+from src.main import arguments
 
 
 class ConfigTests(unittest.TestCase):
