@@ -4,7 +4,7 @@ import json
 import sys
 
 from .config import arguments
-from .graph import build_graph, read_graph
+from .graph import build_graph, load_order, read_graph
 from .repository import dependencies, normalize
 
 
@@ -30,6 +30,9 @@ def run(args):
         print("\n".join(get_dependencies(root)) or "Нет прямых зависимостей")
         return
     graph = build_graph(root, get_dependencies)
+    if args.stage == 4:
+        print(" -> ".join(load_order(graph, root)))
+        return
     print(json.dumps(graph, ensure_ascii=False, indent=2))
 
 

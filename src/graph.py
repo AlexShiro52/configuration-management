@@ -36,3 +36,27 @@ def build_graph(root, get_dependencies):
 
     visit(root)
     return graph
+
+
+def load_order(graph, root):
+    """Вернуть зависимости раньше потребителей; при цикле сообщить его путь."""
+    done, active, order, path = set(), set(), [], []
+
+    def visit(node):
+        """Добавить вершину в результат после обхода всех зависимостей."""
+        if node in active:
+            cycle = path[path.index(node):] + [node]
+            raise ValueError("Нет порядка загрузки: цикл " + " -> ".join(cycle))
+        if node in done:
+            return
+        active.add(node)
+        path.append(node)
+        for child in graph[node]:
+            visit(child)
+        path.pop()
+        active.remove(node)
+        done.add(node)
+        order.append(node)
+
+    visit(root)
+    return order

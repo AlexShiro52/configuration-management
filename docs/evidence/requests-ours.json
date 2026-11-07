@@ -1,0 +1,28 @@
+{
+  "graph": {
+    "requests": [
+      "charset-normalizer",
+      "idna",
+      "urllib3",
+      "certifi"
+    ],
+    "charset-normalizer": [],
+    "idna": [],
+    "urllib3": [],
+    "certifi": []
+  },
+  "load_order": [
+    "charset-normalizer",
+    "idna",
+    "urllib3",
+    "certifi",
+    "requests"
+  ],
+  "versions": {
+    "requests": "2.34.2",
+    "charset-normalizer": "3.5.2",
+    "idna": "3.20",
+    "urllib3": "2.8.0",
+    "certifi": "2026.10.23"
+  }
+}
