@@ -1,0 +1,51 @@
+test_direct_and_transitive (test_cli.CliTests.test_direct_and_transitive)
+Этап 2 выводит только соседей, этап 3 включает транзитивность. ... ok
+test_graphics_stage (test_cli.CliTests.test_graphics_stage)
+Этап 5 передает полный граф рендереру. ... ok
+test_missing_package_and_cycle (test_cli.CliTests.test_missing_package_and_cycle)
+Содержательные ошибки обрабатываются без трассировки стека. ... ok
+test_order (test_cli.CliTests.test_order)
+Этап 4 дает постпорядок DFS и не печатает настройки. ... ok
+test_settings (test_cli.CliTests.test_settings)
+Этап 1 выводит все настройки в формате ключ-значение. ... ok
+test_defaults (test_config.ConfigTests.test_defaults)
+Значения по умолчанию пригодны для реального репозитория. ... ok
+test_invalid_options (test_config.ConfigTests.test_invalid_options)
+Ошибочные значения завершаются кодом 2, без traceback. ... ok
+test_dfs_and_shared_dependency (test_graph.GraphTests.test_dfs_and_shared_dependency)
+Порядок первого посещения соответствует DFS, повторов нет. ... ok
+test_duplicate_edges (test_graph.GraphTests.test_duplicate_edges)
+Повторяющиеся зависимости не дублируют ребра. ... ok
+test_examples (test_graph.GraphTests.test_examples)
+Циклы не приводят к бесконечному обходу и не теряют ребра. ... ok
+test_invalid_graph (test_graph.GraphTests.test_invalid_graph)
+Поврежденные и противоречивые входные данные отклоняются. ... ok
+test_acyclic_examples (test_order.OrderTests.test_acyclic_examples)
+Проверить все ребра, а не только один ожидаемый список. ... ok
+test_cycle_diagnostic (test_order.OrderTests.test_cycle_diagnostic)
+Для цикла и петли строгий топологический порядок невозможен. ... ok
+test_d2_cycle_and_leaf (test_render.RenderTests.test_d2_cycle_and_leaf)
+Результат включает петлю, обычное ребро и изолированную вершину. ... ok
+test_missing_d2 (test_render.RenderTests.test_missing_d2)
+При отсутствии D2 остается текст, ложного PNG нет. ... ok
+test_renderer_errors (test_render.RenderTests.test_renderer_errors)
+Сбой, тайм-аут и отсутствие PNG завершаются понятной ошибкой. ... ok
+test_success_and_invalid_png (test_render.RenderTests.test_success_and_invalid_png)
+Выход заменяется только после успешной проверки сигнатуры. ... ok
+test_marker_expressions (test_repository.MarkerTests.test_marker_expressions)
+Числовые версии не сравниваются лексикографически. ... ok
+test_reject_code (test_repository.MarkerTests.test_reject_code)
+Произвольный Python-код не выполняется. ... ok
+test_bad_metadata (test_repository.RepositoryTests.test_bad_metadata)
+Сеть, JSON и структура метаданных проверяются. ... ok
+test_metadata_and_cache (test_repository.RepositoryTests.test_metadata_and_cache)
+HTTP-ответ читается стандартной библиотекой только один раз. ... ok
+test_names (test_repository.RepositoryTests.test_names)
+Версии отделяются от имен, extras сохраняются. ... ok
+test_optional_and_empty (test_repository.RepositoryTests.test_optional_and_empty)
+Запрошенный extra включается; null означает пустой список. ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.009s
+
+OK

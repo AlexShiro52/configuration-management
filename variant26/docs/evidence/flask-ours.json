@@ -1,0 +1,40 @@
+{
+  "graph": {
+    "flask": [
+      "blinker",
+      "click",
+      "itsdangerous",
+      "jinja2",
+      "markupsafe",
+      "werkzeug"
+    ],
+    "blinker": [],
+    "click": [],
+    "itsdangerous": [],
+    "jinja2": [
+      "markupsafe"
+    ],
+    "markupsafe": [],
+    "werkzeug": [
+      "markupsafe"
+    ]
+  },
+  "load_order": [
+    "blinker",
+    "click",
+    "itsdangerous",
+    "markupsafe",
+    "jinja2",
+    "werkzeug",
+    "flask"
+  ],
+  "versions": {
+    "flask": "3.1.3",
+    "blinker": "1.9.0",
+    "click": "8.5.1",
+    "itsdangerous": "2.2.0",
+    "jinja2": "3.1.6",
+    "markupsafe": "3.0.4",
+    "werkzeug": "3.1.9"
+  }
+}

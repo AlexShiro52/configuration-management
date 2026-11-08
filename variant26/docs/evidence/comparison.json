@@ -1,0 +1,23 @@
+{
+  "requests": {
+    "nodes": 5,
+    "edges": 4,
+    "nodes_equal": true,
+    "edges_equal": true,
+    "pip_order_valid": true
+  },
+  "flask": {
+    "nodes": 7,
+    "edges": 8,
+    "nodes_equal": true,
+    "edges_equal": true,
+    "pip_order_valid": true
+  },
+  "httpx": {
+    "nodes": 7,
+    "edges": 8,
+    "nodes_equal": true,
+    "edges_equal": true,
+    "pip_order_valid": true
+  }
+}

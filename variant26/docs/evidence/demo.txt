@@ -1,0 +1,85 @@
+$ python3 -m src.main --package A --test --repository examples/chain.json --stage 3
+{
+  "A": [
+    "B"
+  ],
+  "B": [
+    "C"
+  ],
+  "C": []
+}
+
+exit=0
+
+$ python3 -m src.main --package A --test --repository examples/chain.json --stage 4
+C -> B -> A
+
+exit=0
+
+$ python3 -m src.main --package A --test --repository examples/diamond.json --stage 3
+{
+  "A": [
+    "B",
+    "C"
+  ],
+  "B": [
+    "D"
+  ],
+  "D": [],
+  "C": [
+    "D"
+  ]
+}
+
+exit=0
+
+$ python3 -m src.main --package A --test --repository examples/diamond.json --stage 4
+D -> B -> C -> A
+
+exit=0
+
+$ python3 -m src.main --package A --test --repository examples/cycle.json --stage 3
+{
+  "A": [
+    "B"
+  ],
+  "B": [
+    "C"
+  ],
+  "C": [
+    "A"
+  ]
+}
+
+exit=0
+
+$ python3 -m src.main --package A --test --repository examples/cycle.json --stage 4
+
+Ошибка: Нет порядка загрузки: цикл A -> B -> C -> A
+exit=1
+
+$ python3 -m src.main --package A --test --repository examples/self.json --stage 3
+{
+  "A": [
+    "A"
+  ]
+}
+
+exit=0
+
+$ python3 -m src.main --package A --test --repository examples/self.json --stage 4
+
+Ошибка: Нет порядка загрузки: цикл A -> A
+exit=1
+
+$ python3 -m src.main --package A --test --repository examples/single.json --stage 3
+{
+  "A": []
+}
+
+exit=0
+
+$ python3 -m src.main --package A --test --repository examples/single.json --stage 4
+A
+
+exit=0

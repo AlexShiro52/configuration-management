@@ -1,0 +1,5 @@
+requests==2.34.2
+├── certifi [required: >=2023.5.7, installed: 2026.10.23]
+├── charset-normalizer [required: >=2,<4, installed: 3.5.2]
+├── idna [required: >=2.5,<4, installed: 3.20]
+└── urllib3 [required: >=1.26,<3, installed: 2.8.0]
