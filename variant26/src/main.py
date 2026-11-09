@@ -21,6 +21,13 @@ COMPARE = {ast.Eq: operator.eq, ast.NotEq: operator.ne,
            ast.Lt: operator.lt, ast.LtE: operator.le,
            ast.Gt: operator.gt, ast.GtE: operator.ge,
            ast.In: lambda a, b: a in b, ast.NotIn: lambda a, b: a not in b}
+STAGE_SETTINGS = 1
+STAGE_DIRECT = 2
+STAGE_GRAPH = 3
+STAGE_ORDER = 4
+STAGE_IMAGE = 5
+INVALID_PORT = 0
+SINGLE_OPERATOR = 1
 TIMEOUT = 20
 NAME = r"[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?"
 REQUIREMENT = rf"^({NAME})(?:\[([^\]]+)\])?"
@@ -36,7 +43,9 @@ def arguments(argv=None):
                         help="URL JSON API или путь к тестовому JSON")
     parser.add_argument("--test", action="store_true", help="тестовый JSON")
     parser.add_argument("--output", default="graph.png", help="выходной PNG")
-    parser.add_argument("--stage", type=int, choices=range(1, 6), default=5,
+    parser.add_argument("--stage", type=int,
+                        choices=range(STAGE_SETTINGS, STAGE_IMAGE + 1),
+                        default=STAGE_IMAGE,
                         help="демонстрация этапа 1-5 (по умолчанию 5)")
     args = parser.parse_args(argv)
     try:
@@ -72,7 +81,7 @@ def validate_url(repository):
         raise ValueError("--repository: нужен URL http:// или https://")
     if url.query or url.fragment or url.username or url.password:
         raise ValueError("--repository: лишние части URL")
-    if url.port == 0:
+    if url.port == INVALID_PORT:
         raise ValueError("--repository: недопустимый порт")
 
 
@@ -125,7 +134,7 @@ def evaluate(node, env):
     if isinstance(node, ast.BoolOp):
         values = [evaluate(value, env) for value in node.values]
         return all(values) if isinstance(node.op, ast.And) else any(values)
-    if isinstance(node, ast.Compare) and len(node.ops) == 1:
+    if isinstance(node, ast.Compare) and len(node.ops) == SINGLE_OPERATOR:
         return compare(evaluate(node.left, env), type(node.ops[0]),
                        evaluate(node.comparators[0], env))
     raise ValueError("Неизвестное выражение в маркере зависимости")
@@ -302,19 +311,19 @@ def main(argv=None):
 
 def run(args):
     """Выполнить выбранный этап: настройки, данные, DFS, порядок или PNG."""
-    if args.stage == 1:
+    if args.stage == STAGE_SETTINGS:
         for key, value in vars(args).items():
             print(f"{key}={value}")
         return
     root, get_dependencies = source(args)
-    if args.stage == 2:
+    if args.stage == STAGE_DIRECT:
         print("\n".join(get_dependencies(root)) or "Нет прямых зависимостей")
         return
     graph = build_graph(root, get_dependencies)
-    if args.stage == 3:
+    if args.stage == STAGE_GRAPH:
         print(json.dumps(graph, ensure_ascii=False, indent=2))
         return
-    if args.stage == 4:
+    if args.stage == STAGE_ORDER:
         print(" -> ".join(load_order(graph, root)))
         return
     description = render(graph, args.output)

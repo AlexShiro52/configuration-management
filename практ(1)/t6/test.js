@@ -1,3 +1,2 @@
-let x = 10;
-// 31231235435
+const x = 10;
 console.log(x);

@@ -13,7 +13,8 @@ from src.main import Shell
 class ShellTests(unittest.TestCase):
     """Проверки команд, ошибок и сохранности исходного архива."""
 
-    def setUp(self):
+    def prepare(self):
+        """Подготовить временный архив и оболочку для проверки."""
         self.folder = tempfile.TemporaryDirectory()
         self.addCleanup(self.folder.cleanup)
         self.archive = Path(self.folder.name) / "vfs.zip"
@@ -33,6 +34,7 @@ class ShellTests(unittest.TestCase):
         return output.getvalue()
 
     def test_quotes_and_comments(self):
+        self.prepare()
         self.command('cp "my file.txt" "new file.txt" # комментарий')
         self.assertEqual(self.shell.nodes["/my file.txt"],
                          self.shell.nodes["/new file.txt"])
@@ -40,6 +42,7 @@ class ShellTests(unittest.TestCase):
         self.assertEqual(self.command("# комментарий"), "")
 
     def test_paths(self):
+        self.prepare()
         self.command("cd a/b/c")
         self.assertEqual(self.shell.cwd, "/a/b/c")
         self.assertIn("file.txt", self.command("ls"))
@@ -47,6 +50,7 @@ class ShellTests(unittest.TestCase):
         self.assertEqual(self.shell.cwd, "/")
 
     def test_hidden_and_long_listing(self):
+        self.prepare()
         self.assertNotIn(".hidden", self.command("ls"))
         self.assertIn(".hidden", self.command("ls -a"))
         self.assertIn(".hidden", self.command("ls .hidden"))
@@ -54,6 +58,7 @@ class ShellTests(unittest.TestCase):
         self.assertIn("600 my file.txt", self.command("ls -l"))
 
     def test_recursive_copy(self):
+        self.prepare()
         self.command("cp -r a copy")
         self.assertEqual(self.shell.nodes["/a/b/c/file.txt"],
                          self.shell.nodes["/copy/b/c/file.txt"])
@@ -62,6 +67,7 @@ class ShellTests(unittest.TestCase):
         self.assertIn("Ошибка", self.command("cp -r a a/b"))
 
     def test_binary_and_archive_unchanged(self):
+        self.prepare()
         self.command("cp binary.bin binary-copy.bin")
         data = self.shell.nodes["/binary-copy.bin"][0]
         self.assertEqual(base64.b64decode(data), bytes(range(256)))
@@ -71,6 +77,7 @@ class ShellTests(unittest.TestCase):
         self.assertEqual(set(Path(self.folder.name).iterdir()), {self.archive})
 
     def test_errors_leave_state_unchanged(self):
+        self.prepare()
         before = self.shell.nodes.copy()
         for command in ("cd binary.bin", "ls missing", "ls -z", "cp a copy",
                         "cp binary.bin binary.bin", "chmod 999 binary.bin",
@@ -81,6 +88,7 @@ class ShellTests(unittest.TestCase):
         self.assertTrue(self.shell.running)
 
     def test_history_calendar_and_config(self):
+        self.prepare()
         self.command("ls")
         self.assertIn("1 ls", self.command("history"))
         self.assertIn("vfs=", self.command("conf-dump"))
@@ -91,6 +99,7 @@ class ShellTests(unittest.TestCase):
         self.assertIn("Ошибка", self.command("history extra"))
 
     def test_script_errors_and_exit(self):
+        self.prepare()
         script = Path(self.folder.name) / "start.txt"
         script.write_text("# комментарий\nunknown\nls\nexit\nls\n",
                           encoding="utf-8")
@@ -103,6 +112,7 @@ class ShellTests(unittest.TestCase):
         self.assertEqual(self.shell.history, ["unknown", "ls", "exit"])
 
     def test_bad_archives(self):
+        self.prepare()
         with self.assertRaises(FileNotFoundError):
             Shell(str(self.archive.parent / "missing.zip"))
         self.archive.write_text("не ZIP", encoding="utf-8")

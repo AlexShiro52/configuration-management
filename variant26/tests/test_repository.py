@@ -12,10 +12,6 @@ from src.main import dependencies, metadata, normalize, package_name
 class RepositoryTests(unittest.TestCase):
     """Нормализация, фильтрация, кэш и ошибки внешнего API."""
 
-    def setUp(self):
-        """Изолировать кэш между тестами."""
-        metadata.cache_clear()
-
     def test_names(self):
         """Версии отделяются от имен, extras сохраняются."""
         self.assertEqual(normalize("Some_Package.Name"), "some-package-name")
@@ -26,6 +22,8 @@ class RepositoryTests(unittest.TestCase):
 
     def test_metadata_and_cache(self):
         """HTTP-ответ читается стандартной библиотекой только один раз."""
+        metadata.cache_clear()
+        self.addCleanup(metadata.cache_clear)
         data = b'{"info":{"requires_dist":["B>=1","C; extra == \'dev\'"]}}'
         with patch("src.main.urlopen", return_value=io.BytesIO(data)):
             self.assertEqual(dependencies("https://example.org", "a"), ["b"])
@@ -41,6 +39,8 @@ class RepositoryTests(unittest.TestCase):
 
     def test_bad_metadata(self):
         """Сеть, JSON и структура метаданных проверяются."""
+        metadata.cache_clear()
+        self.addCleanup(metadata.cache_clear)
         with patch("src.main.urlopen", side_effect=URLError("offline")):
             with self.assertRaises(ValueError):
                 metadata("https://example.org", "a")
